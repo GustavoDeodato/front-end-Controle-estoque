@@ -1,3 +1,5 @@
+'use strict'
+
 class StockManager {
     constructor() {
         this.products = [];
@@ -19,20 +21,31 @@ class StockManager {
 
     async loadData() {
         try {
+            console.log('Carregando dados da API...');
+            
             const marcasResult = await getMarcas();
-            if (marcasResult.marcas) {
-                this.marcas = marcasResult.marcas;
+            console.log('Marcas result:', marcasResult);
+            if (marcasResult && marcasResult.Marcas) {
+                this.marcas = marcasResult.Marcas;
             }
             
             const tiposResult = await getTiposProduto();
-            if (tiposResult.tipos_produto) {
-                this.tiposProduto = tiposResult.tipos_produto;
+            console.log('Tipos result:', tiposResult);
+            if (tiposResult && tiposResult.TipoProduto) {
+                this.tiposProduto = tiposResult.TipoProduto;
             }
             
             const sosResult = await getSistemasOperacionais();
-            if (sosResult.sistemas_operacionais) {
-                this.sistemasOperacionais = sosResult.sistemas_operacionais;
+            console.log('SOs result:', sosResult);
+            if (sosResult && sosResult.SistemaOperacional) {
+                this.sistemasOperacionais = sosResult.SistemaOperacional;
             }
+            
+            console.log('Dados carregados:', {
+                marcas: this.marcas.length,
+                tipos: this.tiposProduto.length,
+                sos: this.sistemasOperacionais.length
+            });
         } catch (error) {
             console.error('Erro ao carregar dados:', error);
         }
@@ -336,73 +349,3 @@ document.addEventListener('DOMContentLoaded', async () => {
     stockManager = new StockManager();
 });
 
-// Função para adicionar dados de exemplo (comentada para usar API)
-/*
-if (stockManager.products.length === 0) {
-    const sampleProducts = [
-        {
-            id: '1',
-            name: 'iPhone 15 Pro',
-            code: 'IPH15P128',
-            category: 'smartphone',
-            brand: 'Apple',
-            price: 8999.00,
-            color: 'Titânio Natural',
-            tensao: '5V',
-            dimensoes: '146.6 x 70.6 x 8.25 mm',
-            resolucao_tela: '2556 x 1179',
-            capacidade: '128GB',
-            memoria_ram: '8GB',
-            armazenamento: '128GB',
-            resolucao_camera: '48MP',
-            peso: '187g',
-            acessorios: 'Cabo USB-C, Documentação',
-            quantidade: 5
-        },
-        {
-            id: '2',
-            name: 'Samsung Galaxy S24',
-            code: 'SGS24256',
-            category: 'smartphone',
-            brand: 'Samsung',
-            price: 4999.00,
-            color: 'Preto',
-            tensao: '5V',
-            dimensoes: '147 x 70.6 x 7.6 mm',
-            resolucao_tela: '2340 x 1080',
-            capacidade: '256GB',
-            memoria_ram: '8GB',
-            armazenamento: '256GB',
-            resolucao_camera: '50MP',
-            peso: '167g',
-            acessorios: 'Cabo USB-C, Carregador',
-            quantidade: 15
-        },
-        {
-            id: '3',
-            name: 'MacBook Air M2',
-            code: 'MBA13M2',
-            category: 'notebook',
-            brand: 'Apple',
-            price: 12999.00,
-            color: 'Cinza Espacial',
-            tensao: '100-240V',
-            dimensoes: '304.1 x 215 x 11.3 mm',
-            resolucao_tela: '2560 x 1664',
-            capacidade: '256GB SSD',
-            memoria_ram: '8GB',
-            armazenamento: '256GB SSD',
-            resolucao_camera: '1080p',
-            peso: '1.24kg',
-            acessorios: 'Carregador MagSafe, Cabo USB-C',
-            quantidade: 3
-        }
-    ];
-    
-    stockManager.products = sampleProducts;
-    stockManager.saveToStorage();
-    stockManager.renderProducts();
-    stockManager.updateStats();
-    stockManager.populateBrandFilter();
-}
-*/

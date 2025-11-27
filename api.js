@@ -33,8 +33,17 @@ async function deleteConectividade(id) {
 
 // Marcas
 async function getMarcas() {
-    const response = await fetch(`${API_BASE_URL}/marcas`);
-    return response.json();
+    try {
+        console.log('Fazendo requisição para:', `${API_BASE_URL}/marcas`);
+        const response = await fetch(`${API_BASE_URL}/marcas`);
+        console.log('Response status:', response.status);
+        const data = await response.json();
+        console.log('Dados recebidos:', data);
+        return data;
+    } catch (error) {
+        console.error('Erro ao buscar marcas:', error);
+        return { marcas: [] };
+    }
 }
 
 async function createMarca(data) {
